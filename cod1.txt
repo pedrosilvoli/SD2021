@@ -1,0 +1,31 @@
+import threading
+import time
+
+start = time.perf_counter()
+
+
+def do_something():
+	print('Sleeping 1 second...')
+	time.sleep(1)
+	print('Done Sleeping')
+
+t1 = threading.Thread(target=do_something) #creating a thread, target pass in the function you want to run
+t2 = threading.Thread(target=do_something) #creating the second thread
+
+#thread objects created, but it doesn't run the function. In order to get the threads to run, you need to use the star method
+#in each thread
+
+t1.start()
+t2.start()
+
+#Now the functions run and while they're sleeping the rest of the script runs. Then after sleeping 1s the threads continue
+#and both printed that they were done sleeping
+
+t1.join()
+t2.join()
+
+#Used in order to complete/finish the threads before calculating the finish time
+
+finish = time.perf_counter()
+
+print(f' Finished in {round(finish-start, 2)} second(s)')

@@ -1,0 +1,23 @@
+import concurrent.futures
+import time
+
+start = time.perf_counter()
+
+
+def do_something(seconds): #attributing an argument to the function
+	print(f'Sleeping {seconds} second(s)...')
+	time.sleep(seconds)
+	return 'Done Sleeping'
+
+with concurrent.futures.ThreadPoolExecutor() as executor: 
+	f1 = executor.submit(do_something, 1) #passing the function and argument
+	print(f1.result()) #wait the functions complete
+
+# If you want to execute the function once at a time, you can use the submit method. The submit method schedules a function to be
+# executed and returns a future object. A future object encapsulates the execution of the function and allows to check in on it
+# after it's been scheduled
+	
+
+finish = time.perf_counter()
+
+print(f' Finished in {round(finish-start, 2)} second(s)')

@@ -1,0 +1,27 @@
+import concurrent.futures
+import time
+
+start = time.perf_counter()
+
+
+def do_something(seconds): #attributing an argument to the function
+	print(f'Sleeping {seconds} second(s)...')
+	time.sleep(seconds)
+	return f'Done Sleeping {seconds}'
+
+with concurrent.futures.ThreadPoolExecutor() as executor: 
+	secs = [5, 4, 3, 2, 1]
+	results = executor.map(do_something, secs)
+
+#when we use the submit method it returns a future object
+#and when we use map it returns the results. Both methods run the thread concurrently
+
+	for f in concurrent.futures.as_completed(results): #passing in the results list
+		print(f.results())
+
+finish = time.perf_counter()
+
+print(f' Finished in {round(finish-start, 2)} second(s)')
+
+#The 5 seconds thread started first, but since we used the "as completed method" it printed out the results
+#in the order that they completed
