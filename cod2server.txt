@@ -1,0 +1,19 @@
+from cod2main import Servidor
+import sys
+import concurrent.futures
+
+
+porta = sys.argv[1]
+arquivo = sys.argv[2]
+
+Server = Servidor(porta,arquivo)
+Server.readFile()
+i = 1
+while True:
+    with concurrent.futures.ThreadPoolExecutor() as executor: #multithread
+        executor.map(Server.sendFile, '{}'.format(i))
+    while not Server._flag: #enquanto flag falso permanece no loop
+        pass
+    print(Server.mensagem)
+    i = i+1 #aumentando i para ir pro próximo cliente
+    Server._flag = False #redefinindo o flag

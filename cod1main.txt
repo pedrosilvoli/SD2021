@@ -1,0 +1,53 @@
+import socket 
+
+class Servidor:
+    def __init__(self, porta, file):
+        self._hostServer = '192.168.15.8'
+        print('IP: ',self._hostServer)
+        self._port = int(porta)            # na execução inserir porta utilizada
+        self._tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #definindo socket tcp
+        self._address = (self._hostServer, self._port)#definindo endereço de ip e porta
+        self._tcp.bind(self._address) #informando o endereço para a conceçao tcp
+        self._tcp.listen(1)# definindo número de conexões do server
+        self._nameFile = file # na execução inserir caminho do arquivo que deseja enviar
+
+    def closeConnection(self): #definindo função
+        self._tcp.close()
+
+    def readFile(self):#função para ler arquivo
+        try:
+            self._fileOpen = open(self._nameFile, "rb")#abre o arquivo
+            self._envio = self._fileOpen.read()#define arquivo a ser enviado como o arquivo aberto
+        except IOError as e:
+            print ('ERROR: ARQUIVO NAO ENCONTRADO')
+        finally:
+            self._fileOpen.close()#fecha o fluxo de arquivo
+            #print(self._envio)
+
+    def sendFile(self):#função de envio do arquivo
+        print ('Conectado...')
+        self._connection, self._client = self._tcp.accept() #registrando quem aceitou o envio (cliente)
+        print ('Conectado por', self._client)      
+        #self._tcp.send (self._envio)]
+        self._connection.sendall(self._envio)#envio do arquivo escolhido
+
+class Cliente:
+    def __init__(self, IP , porta , file ):
+        self._hostServer = IP
+        self._port = int(porta)            # inserir porta utilizada
+        self._tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #definindo socket tcp
+        self._address = (self._hostServer, self._port) #definindo endereço de ip e porta
+        print ('Esperando cliente...')
+        self._tcp.connect(self._address) #realiza conexão
+        print ('Conectado!')
+        self._nameFile = file #definindo nome do arquivo a ser recebido
+
+    def closeConnection(self):
+        self._tcp.close()
+
+    def receiveFile(self):#função de download do cliente
+        with open(self._nameFile,'wb') as wf:
+            while True:
+                self._recebido = self._tcp.recv(4096)
+                if not self._recebido: break
+                wf.write(self._recebido)

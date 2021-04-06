@@ -1,0 +1,59 @@
+import socket
+
+class Servidor:
+
+    _flag= False #definindo booleano trigger
+    mensagem = 'msg' #definindo variavel e definindo como um string qualquer
+
+    def __init__(self, porta, file):
+        self._hostServer = '127.0.0.10'
+        print('IP: ',self._hostServer)
+        self._port = int(porta)         #parametro
+        self._tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._address = (self._hostServer, self._port)
+        self._tcp.bind(self._address)
+        self._tcp.listen(999999) #uso de multithread requer mais conexões
+        self._nameFile = file 
+
+
+    def readFile(self):
+        try:
+            self._fileOpen = open(self._nameFile, "rb")
+            self._envio = self._fileOpen.read()
+        except IOError as e:
+            print ('ERROR: ARQUIVO NAO ENCONTRADO')
+        finally:
+            self._fileOpen.close()
+
+    def sendFile(self, contador):
+        self.mensagem = 'cliente {} peguei'.format(contador) #altera a var mensagem para registrar que pegou a mensagem
+        print ('Esperando cliente...')
+        self._connection, self._client = self._tcp.accept()
+        self._flag = True #booleano trigger registrado
+        print ('Cliente {} conectado'.format(self._client[0]))      
+        self._connection.sendall(self._envio)#envia variavel envio
+        #self._tcp.close()
+        self._connection.close()
+
+
+class Cliente:
+    def __init__(self, IP , porta , file ):
+        self._hostServer = IP
+        self._port = int(porta)            # parametro
+        self._tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._address = (self._hostServer, self._port)
+        print ('Conectando...')
+        self._tcp.connect(self._address)
+        self._nameFile = file #parametro
+
+    def closeConnection(self):
+        self._tcp.close()
+
+    def receiveFile(self):
+        with open(self._nameFile,'wb') as wf:
+            print ('Baixando...')
+            while True:
+                self._recebido = self._tcp.recv(4096)
+                if not self._recebido: break
+                wf.write(self._recebido)
+            print ('Concluido!')
