@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icones">
+        <file>floppy-disk.png</file>
+        <file>folder.png</file>
+        <file>new.png</file>
+    </qresource>
+</RCC>
