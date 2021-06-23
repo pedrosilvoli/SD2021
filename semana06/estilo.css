@@ -1,0 +1,60 @@
+/*Importa a fonte escolhida para ser utilizada no projeto*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap');
+*{
+    padding: 0; /*espaço entre borda e conteúdo dos elementos é nulo*/
+    margin: 0; /* sem margem nas bordas da tela*/
+    outline: none; /*impede que quando algum elemento é selecionado fique a borda indicando seleção*/
+    font-family: 'Montserrat', sans-serif; /*declarando a fonte, se não achar montserrat usa uma fonte sem serifa do navegador do usuário*/
+    font-weight: 500;
+    font-size: 22px;
+}
+
+body {
+    display: flex;/*Usado para centralizar os itens dentro do body*/
+    justify-content: center;/*centraliza na horizontal*/
+    align-items: center;/*centraliza na vertical*/
+    height: 100vh; /*ocupa todo o espaço da tela*/
+    background: #f8b3d3;
+}
+input {
+    margin: 2px; 
+    border: none;
+    border-radius: 3px; /*arredonda as quinas*/
+}
+input[type=text] {
+    width: calc(100% - 4px);/*subtrai os 4 pixels para considerar a margem do display*/
+    height: 40px;
+}
+input[type=button] {
+    width: 100px;
+    height: 50px;
+    transition: ease 0.2s;
+    cursor: pointer;
+}
+div#calculadora {
+    box-shadow: 0 0 20px black;
+}
+div#calculadora div {/*tudo que estiver dentro da div calculadora e for div vai ser display flex para acertar o espaçamento*/
+    display: flex;
+}
+div#calculadora div input:nth-child(4) {
+    background: #f6c7a7;
+}
+div#quarta input:nth-child(1) {/*o input que está na div quarta e for o primeiro vai ser estilizado*/
+    background: #158495;
+}
+div#quarta input:nth-child(1), div#calculadora {
+    border-bottom-left-radius: 35px; /*chanfro maior*/
+}
+div#quarta input:nth-child(3) {
+    background: #1dcaae;
+}
+div#quarta input:nth-child(4), div#calculadora {
+    border-bottom-right-radius: 35px;
+}
+input[type=button]:hover {/*quando o usuário passar o cursor o botão fica mais escuro*/
+    filter: brightness(50%);
+}
+input[type=button]:active {/*quando o usuário clicar nos botões eles reduzem seu tamanho para indicar que foram apertados*/
+    transform: scale(0.9);
+}
