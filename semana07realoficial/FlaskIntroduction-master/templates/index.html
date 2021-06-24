@@ -1,0 +1,40 @@
+{% extends 'base.html' %} <!--herdando o template-->
+
+{% block head %} <!--programando o bloco de acordo com as necessidades dessa página-->
+<title>Task Master</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center">Task Master</h1> <!--título-->
+    {% if tasks|length < 1 %} <!--se não há entradas, não mostrar a tabela-->
+    <h4 style="text-align: center">There are no tasks. Create one below!</h4>
+    {% else %} <!--se houver entradas, criar a tabela-->
+    <table> <!--criando uma tabela-->
+        <tr><!--primeira linha criando as colunas com seus títulos-->
+            <th>Task</th>
+            <th>Added</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in tasks %}<!--pega todas as tasks da variavél tasks que foram passadas para este template-->
+            <tr>
+                <td>{{ task.content }}</td><!--retorna o conteúdo de cada task-->
+                <td>{{ task.date_created.date() }}</td><!--retorna a data de criação (somente a data)-->
+                <td>
+                    <a href="/delete/{{task.id}}">Delete</a><!--pega o id da task atual (que o usuário está passando o mouse para deletar) para formar o url-->
+                    <br>
+                    <a href="/update/{{task.id}}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <div class="form">
+        <form action="/" method="POST"> <!--Faz um form que o usuário coloca como input o texto da tarefa e o outro input é o botão de submeter o envio-->
+            <input type="text" name="content" id="content">
+            <input type="submit" value="Add Task">
+        </form>
+    </div>
+</div>
+{% endblock %}

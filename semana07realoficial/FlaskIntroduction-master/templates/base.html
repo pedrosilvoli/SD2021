@@ -1,0 +1,15 @@
+<!--Herança de Template: você desenvolve um arquivo base que vai ser o esqueleto de todas as páginas
+e em cada página que herda o template, você adiciona o código que é necessário somente nela.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> <!--a função url_for recebe a pasta estática, o nome do arquivo e a sintaxe Jinja 2 retorna o resultado como string e linka a stylesheet-->
+    {% block head %}{% endblock %}<!--Criando um bloco no template (com flask), no qual será inserido o código nas páginas que herdarem o template-->
+</head>
+<body>
+    {% block body %}{% endblock %}
+</body>
+</html>
